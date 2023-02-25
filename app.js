@@ -9,32 +9,23 @@ var app = express();
 // view engine setup
 app.set('views', path.join(__dirname, 'views'));
 app.set('view engine', 'jade');
-
 app.use(logger('dev'));
 app.use(express.json());
 app.use(express.urlencoded({ extended: false }));
 app.use(cookieParser());
 app.use(express.static(path.join(__dirname, 'public')));
 app.use('/', indexRouter);
-
-// catch 404 and forward to error handler
-// app.use(function (req, res, next) {
-//   next(createError(404));
-// });
-
 // error handler
 app.use(function (err, req, res, next) {
   // set locals, only providing error in development
   res.locals.message = err.message;
   res.locals.error = req.app.get('env') === 'development' ? err : {};
-
   // render the error page
   res.status(err.status || 500);
   res.render('error');
 });
 
-
-// get the client
+// connect to the database
 // const mysql = require('mysql2');
 var mysql = require('mysql');
 
@@ -50,7 +41,6 @@ dbConn.connect(function (err) {
     console.error('Database connection failed: ' + err.stack);
     return;
   }
-
   console.log('Connected to database.');
 });
 
@@ -87,14 +77,15 @@ const userDataValidateChainMethod = [
 API Section
 */
 
-// // Retrieve all users 
+// ***Retrieve all users*** 
 // app.get('/users', function (req, res) {
 //   dbConn.query('SELECT * FROM `assignment`.`user`', function (error, results, fields) {
 //     if (error) throw error;
 //     return res.send({ "data": results });
 //   });
 // });
-// Retrieve user with id 
+
+// ***User Qeury API*** 
 app.get('/users', function (req, res) {
   let user_id = req.query.id;
   req.headers['Request-Date'] = new Date().toUTCString();
@@ -112,7 +103,7 @@ app.get('/users', function (req, res) {
   });
 });
 
-// Add a new user  
+// ***User Sign Up API***  
 app.post('/users', userDataValidateChainMethod, function (req, res) {
   // Validate incoming input
   const errors = validationResult(req);
@@ -137,7 +128,6 @@ app.post('/users', userDataValidateChainMethod, function (req, res) {
       return res.status(403).send({ error: true, message: 'Email Already Exists' });
     }
   });
-
 
 
   dbConn.query("INSERT INTO `assignment`.`user` SET ? ", { name: name, email: email, password: password }, function (error, results, fields) {
