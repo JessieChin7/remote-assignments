@@ -88,7 +88,6 @@ API Section
 // ***User Qeury API*** 
 app.get('/users', function (req, res) {
   let user_id = req.query.id;
-  req.headers['Request-Date'] = new Date().toUTCString();
   if (!user_id) {
     return res.status(400).send({ error: true, message: 'Please provide user_id' });
   }
@@ -100,8 +99,7 @@ app.get('/users', function (req, res) {
       return res.status(403).send({ error: true, message: 'User Not Existing' });
     }
     const user = { "id": results[0]['id'], "name": results[0]['name'], "email": results[0]['email'] };
-    // var datetime = new Date().toUTCString();
-    return res.send({ data: { user, date: req.headers['Request-Date'] } });
+    return res.send({ data: { user, date: req.header('Request-Date') } });
   });
 });
 
@@ -117,7 +115,6 @@ app.post('/users', userDataValidateChainMethod, function (req, res) {
     });
   }
 
-  req.headers['Request-Date'] = new Date().toUTCString();
   const name = req.body.name;
   const email = req.body.email;
   const password = req.body.password;
@@ -141,7 +138,7 @@ app.post('/users', userDataValidateChainMethod, function (req, res) {
     console.log(results)
     const user = { "id": results['insertId'], "name": name, "email": email };
     var datetime = new Date().toUTCString();
-    return res.send({ data: { user, date: req.headers['Request-Date'] } });
+    return res.send({ data: { user, date: req.header('Request-Date') } });
   });
 
 });
