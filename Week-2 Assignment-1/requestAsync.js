@@ -1,7 +1,7 @@
 // requestAsync.js
 var XMLHttpRequest = require("xmlhttprequest").XMLHttpRequest;
 const url = "https://api.appworks-school-campus3.online/api/v1/clock/delay";
-function requestCallback(url, callback) {
+function requestCallback(url) {
     // write code to request url asynchronously
     const request = new XMLHttpRequest();
     request.open('GET', url, true);
