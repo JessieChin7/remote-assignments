@@ -93,7 +93,9 @@ app.get('/users', function (req, res) {
     return res.status(400).send({ error: true, message: 'Please provide user_id' });
   }
   dbConn.query('SELECT * FROM `assignment`.`user` WHERE id=' + user_id, function (error, results, fields) {
-    if (error) throw error;
+    if (error) {
+      return res.status(403).send({ error: true, message: 'User Not Existing' });
+    }
     if (results.length === 0) {
       return res.status(403).send({ error: true, message: 'User Not Existing' });
     }
@@ -122,7 +124,9 @@ app.post('/users', userDataValidateChainMethod, function (req, res) {
 
   // validate 403
   dbConn.query('SELECT * FROM `assignment`.`user` WHERE email="' + email + '"', function (error, results) {
-    if (error) throw error;
+    if (error) {
+      return res.send(error);
+    }
     if (results.length > 0) {
       // Already exist 
       return res.status(403).send({ error: true, message: 'Email Already Exists' });
@@ -131,7 +135,9 @@ app.post('/users', userDataValidateChainMethod, function (req, res) {
 
 
   dbConn.query("INSERT INTO `assignment`.`user` SET ? ", { name: name, email: email, password: password }, function (error, results, fields) {
-    if (error) throw error;
+    if (error) {
+      return res.send(error);
+    }
     console.log(results)
     const user = { "id": results['insertId'], "name": name, "email": email };
     var datetime = new Date().toUTCString();
