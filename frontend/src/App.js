@@ -48,8 +48,8 @@ const LoginSquare = (props) => {
 
     AuthService.register(name, email, password).then(
       (response) => {
-        setMessage(response.data.message);
-
+        console.log(JSON.stringify(response.data['data']['user']));
+        setMessage(JSON.stringify(response.data['data']['user']));
       },
       (error) => {
         const resMessage =
@@ -66,10 +66,9 @@ const LoginSquare = (props) => {
   };
 
   return (
-    <div className="account_square">
-
-      <div className="account_title">會員登入</div>
-      <div className="input_position">
+    <body>
+      <div class="container">
+        <h3 class="center">會員註冊</h3>
         <input
           type="text"
           className="input"
@@ -97,25 +96,17 @@ const LoginSquare = (props) => {
           onChange={onChangePassword}
           validations={[required]}
         />
-      </div>
-      <div className="choose_button">
         <form ref={form} onSubmit={handleRegister}> {/*註冊*/}
-          <button className="register_button">
-            {/* {loading && (
-              <span className="spinner-border spinner-border-sm"></span>
-            )} */}
-            <span>Register</span>
-          </button>
-
-          {message && (
-            <div className="alert alert-danger" role="alert">
-              {message}
-            </div>
-          )}
+          {/* {loading && (
+            <span className="spinner-border spinner-border-sm"></span>
+          )} */}
+          <button>Register</button>
+          <div className="span.psw" role="alert">
+            {message}
+          </div>
         </form>
       </div>
-
-    </div>
+    </body>
   );
 };
 
