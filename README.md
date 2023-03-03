@@ -5,4 +5,4 @@
 - Change descriptions：
   - completed the first frontend service by using `React.js`
   - set up nginx
-  - restructure the git repository
+  - restructure the git repository, intergrate frontend and backend
