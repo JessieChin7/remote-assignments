@@ -1,4 +1,4 @@
-node_modules
+/node_modules
 # example
 # # 忽略 secret.yml 檔案
 # secret.yml
